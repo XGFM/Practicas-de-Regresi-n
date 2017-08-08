@@ -1,0 +1,42 @@
+###vectores##
+a<-2+3
+b<-c(3,4) - c(6,1) ##esta diferencia genera un vector 2 entradas
+c<-c(4,5,6)*c(5,2,1)##vector de 3 entradas 
+d<- c(1:50,7,99)
+length(d)##da longitud del vector
+length(c)
+##operaciones logicas con vectores
+d>=45
+d==50
+d!=35
+#sucesiones con operador y funcion
+help(seq)
+z<- seq(0,30,3)
+z
+seq(from=0,to=30,by=3)
+seq(10)
+seq(2,10)
+seq(from=3,to=10)
+secuencia<- seq(1,10,by=1)
+secuencia1<- seq(0,100,by=3)
+sec2<- seq(130,300,by=3)
+sec2<- seq(300,130,by=-3)
+ingreso <-sample(20000:50000,100)
+(ingreso<-sample(20000:50000,100))#alponer parentesis al final e inicio de la funcion te imprime directamente la funcion
+ingreso >=40000
+
+aleatorios<-sample(1:10,20,replace = TRUE)
+(aleatorios <-sample(1:10,20,replace=T))
+ingreso [50]
+ingreso[73]
+ingreso[c(30,50,70)]
+ingreso[seq(20,50,10)]
+ingreso[30:43]
+ingreso[ingreso>40000]
+ingreso[ingreso<22000]
+ingreso[ingreso>20000 & ingreso<30000]
+#|=o, &=Y
+
+ss<- c (5,-7,9)
+rr<- rep(ss,times=5)
+rr
