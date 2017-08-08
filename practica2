@@ -1,0 +1,17 @@
+##crear 3 variables de 4 entradas. las variables de nombre:
+###facultad(economia,ingenieria,arqu,derecho)
+##calificacion alumnos(6,4,10,8)
+##verificale con r que tipo de variables son
+##(numerico y caracter)
+##borrar las variables facultad y licenciatura
+#graficar pie la variables calificaion
+##incorporar los diversos argumentos utilizados en clase
+fac<-c ("economia","ingenieria","arquitectura","derecho")
+calif <-c (6,4,10,8)
+lic<-c("Actuaria","ing. civil","arquitectura","derecho")
+class(fac)
+class(lic)
+class(calif)
+rm(fac)
+rm(lic)
+pie (calif, etiq, col = c ("blue", "red", "pink", "yellow"), radius = 1, clockwise = TRUE, lty = 18)
