@@ -18,7 +18,9 @@ d
 colnames(d)<-c("Toluca","Pachuca","Gdl","Mty")
 d
 rownames(d)<-c("escuela1","escuela2","escuela3","escuela 4","escuela5")
-d
+d["escuela3","Toluca"]
+d["escuela5","Gdl"]
+d["escuela1","Pachuca"]
 f<-matrix(110:119,nrow=6,ncol=3,byrow=T)
 f[3,3]
 View(f)
