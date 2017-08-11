@@ -1,0 +1,70 @@
+d<-(11:30)
+dim(d)<-c(5,4)
+d
+colnames(d)<-c("Toluca","Pachuca","Gdl","Mty")
+d
+rownames(d)<-c("escuela1","escuela2","escuela3","escuela 4","escuela5")
+d["escuela3","Toluca"]
+d["escuela5","Gdl"]
+d["escuela1","Pachuca"]
+f<-matrix(110:118,nrow=6,ncol=3,byrow=T)
+f[3,3]
+View(f)
+##para pegar un renglon a la matriz d
+  d<-rbind(d,c(4,5,6,7))####pega un nuevo renglon
+d
+rownames(d)<-c("escuela1","escuela2","escuela3","escuela 4","escuela5","escuela6")
+d
+d<-cbind(d,c(14,25,36,47,99,81))###para pegar una columna
+d
+colnames(d)<-c("Toluca","Pachuca","Gdl","Mty","jocotitlan")
+d
+d["escuela1","jocotitlan"]<-28####editar la matriz en una posicion(cambiar el valor de una celda)
+d
+edit(d)####editar la matriz en una posicion(cambiar el valor de una celda)
+###para multilicar matrices se utiliza %*%
+j%*%i
+####para la transpuesta de una matriz se utiliza t()
+t(i)
+###############################################DATA FRAME
+nombres<-c("sergio","juan","rocio","jessica")
+#creo vectores
+edad<-c(30,43,21,18)###creo vectores
+altura<-c(170,165,175,172)###creo vectores
+salario<-c(3000,4500,2200,4300)###creo vectores
+basem<-data.frame(nombres,edad,altura,salario)###crear la base
+View(basem)
+basem[4,3]<-178###asignar valor a la celda 4,3 de la base
+basem$salario*2.2->basem$salario###multiplica salario por 2.2 y ka reasigna
+peso<-c(83.2,75.2,69.3,70.5)
+basem<-data.frame(nombres,edad,altura,salario,peso)###crear la base
+basem
+basem$peso*1.2->basem$peso
+basem
+round(basem$peso,3)->basem$peso###redondeo
+basem
+
+basem$escol<-c("prepa","lic","ninguno","prim")#incorpora una nueva columna
+basem
+basem$sexo<-c(1,1,2,2 )
+basem
+table(basem$sexo)###genera una frecuencia
+attach(basem)###apartir de esta linea mandara a traer solo de la base m es decir ya no se debera asignar asi
+#table(basem$sexo) sino solo table(sexo)
+detach(basem)#quita el attach
+
+
+
+####instalar paqueterias desde internet
+install.packages("foreign")###importar e importat datos
+install.packages("questionr")
+install.packages("car")
+###de esta forma instalamos desde internet multiples 
+installed.packages(c("foreign","questionr","car"))
+##la paqueteria foreign sirve para exportar o importar base de datos
+##questionr es para expandir frecuencias de bases de datos muestrales  y 
+#car es para regresion
+#dentro de cada paquete vienen multiples funciones que solo las 
+#podemos usar cuando mandamos a llamar el paquete
+###para mandar a llamar una paqueteria instalada,library() y requiere(son funciones equivalentes)
+library(foreign)
