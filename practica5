@@ -68,3 +68,6 @@ installed.packages(c("foreign","questionr","car"))
 #podemos usar cuando mandamos a llamar el paquete
 ###para mandar a llamar una paqueteria instalada,library() y requiere(son funciones equivalentes)
 library(foreign)
+library(questionr)
+library(car)
+
