@@ -1,0 +1,23 @@
+install.packages("foreign")
+library(foreign)
+####para descargar una base de datos
+require(foreing)
+mti2015<-read.dbf("C://Users/SALA-D32//Desktop//mti2015_05_17_sdem_precodificado.DBF")
+table(mti2015$SEX)###PARA SABER CUANTOS NIÑOS Y CUANTAS NIÑAS HAY
+install.packages("questionr")
+library(questionr)
+require(questionr)
+wtd.table(mti2015$SEX,weights=mti2015$FAC_MTI)
+ls(mti2015)
+sum(mti2015$FAC_MTI)
+table(mti2015$R_DEF_ENOE)
+table(mti2015$CS_P12)
+wtd.table(mti2015$CS_P12,weights=mti2015$FAC_MTI)
+wtd.table(mti2015$EDA,mti2015$cs_p12,weights=mti2015$FAC_MTI)
+edomex<-subset(mti2015,mti2015$ENT==15)
+edomexmuj<-subset(mti2015,mti2015$ENT==15 & mti2015$SEX==2)
+agzac<- subset(mti2015,mti2015$ENT=="01" | mti2015$ENT==32)
+table(agzac$ENT)
+###volver variable tipo caracter a factor
+as.numeric(mti2015$ENT)
+class(mti2015$ENT)
