@@ -1,0 +1,6 @@
+###volver variable tipo caracter a factor
+as.numeric(mti2015$ENT)
+class(mti2015$ENT)
+##convertir variable a numerico
+entn<-as.numeric(mti2015$ENT)
+class(entn)
