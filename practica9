@@ -1,0 +1,6 @@
+#A mayor numero de horas de estudio(variable indepenciente x) mayor es el promedio obtenido(variable dependiente y)
+x<-sample(2:10,10,replace = T)
+y<-sample(6:10,10,replace=T)
+
+plot(x, y,main ="grafica de dispercion de la relacion de horas de estudio y promedio", xlab ="x" ,ylab ="y")
+lines(lowess(y~x))
