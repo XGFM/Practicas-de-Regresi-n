@@ -1,0 +1,35 @@
+##ejercicio clase##
+#se busca la relacion de estatura (x) con longitud del salto (y)
+x<-c(170,172,173,174,174,175,176,177,180,180,180,180,180,181,181,182,182,182,182,184,184,185,186,188)
+y<-c(.84,1.31,1.42,1.03,1.07,1.08,1.04,1.8,1.45,1.60,1.61,2.13,2.15,.84,1.43,.90,1.81,1.94,2.68,1.49,2.52,3.00,1.87,3.08)
+
+x2<-sum(x*x)
+xy<-sum(x*y)
+sx<-sum(x)
+sy<-sum(y)
+n<-24
+sxx<-x2-(sx*sx/n)
+sxy<-xy-(sx*sy/n)
+B1<-sxy/sxx
+sbx<-sum(B1*x)
+B0<-((sy-sbx)/n)
+sp<-(B0+B1*(182))
+sp<-(B0+B1*(x))
+sse<-sum((y-yg)*(y-yg))
+s2<-sse/24
+res1<-(.90-sp)
+res2<-1.81-sp
+res3<-1.94-sp
+res4<-2.68-sp
+plot(y~x,xlab="estatura",ylab="salto horizontal",xlim=c(160,190),ylim=c(.80,3.2),main="Grafica de dispersión)")
+abline(md1,col("pink"))
+#1)determine la ecuacion de la recta de regresion estimada
+#2)calcule una estimacion puntual del salto horizontal=yg=1.9060
+#3)calcule los valores de los residuos de min cuadrado de las 4 observaciones con los cuales la estatura es de 182 valor1 valor2 valor3 valor 4
+#¿que proporcion de la variacion observada en el salto horizontal es atribuida a la relacion de regresion lineal simple?45%
+##otra forma de encontrar (B1) y (B0)
+md1<-lm(y~x)
+summary(md1)
+names(md1)
+md1$coefficients[1]
+md1$residuals
