@@ -75,7 +75,7 @@ sse<-sum((y-yg)*(y-yg))
 s2<-sse/13
 #f)¿que proporcion de la variacion observada en la porosidad se puede atribuir
 #a la relacionlineal aproximada entre el pero unitario y la porosidad
-#es de 100.0004
+#r^2=.973887la porosidad depende 97% del peso en las muestras de concreto
 
 syy=sum((y*y))
 sst=syy-(((syy)*(syy))/15)
