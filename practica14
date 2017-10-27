@@ -1,0 +1,105 @@
+#ejercicio en clase
+#en una financiera se quiere evaluar a los corredores de bolsa de 
+#diferentes empresas,la oferta y desempeño de cada corredor se evalua en 6 areas,
+#empleando para cada una de las areas una escala de 0 a 5 tres de las areas
+#evaluadas son ejecucion en la operacion,
+#facilidad de uso y gama de ofertas. un 5 es la ,mejor calificacion en las diferentes  areas
+#en los siguientes datos se presentan las puntuaciones obtenidas
+corredor<-c("wall st","etrade1","etrade2","pre trade","track","water house","brown","br america","merill lynch","strong funds")
+operacion<-c(3.7,3.4,2.5,4.8,4,3,2.7,1.7,2.2,1.4)
+uso<- c(4.5,3,4,3.7,3.5,3,2.5,3.5,2.7,3.6)
+gama<-c(4.8,4.2,4,3.4,3.2,4.6,3.3,3.1,3,2.5)
+califtotal<-c(4,3.5,3.5,3.5,3.5,3.5,3,3,2.5,2)
+#a)determine la ecuacion de reg estimada que se puede usar para predecir la calificacion toral segun
+#las evaluaciones obtenidas
+#b)emplee la prueba F para determinar la significancia global de la relacion,
+#el nivel de significancia que se requiere es de 95%¿cual es su conclucion?
+#c)elimine cualquiera de las var indep que no sea signidicativa para la ec de regresion
+#estimada.¿cual es la ec de regresion estimada que recomienda compara las r2 de los modelos 
+modmo1<-lm(califtotal ~ operacion+uso+gama)
+anova(modmo1)
+summary(modmo1)
+coef(modmo1)
+#la ecuacion del modelo es 
+#y=0.3450970+0.2548221x10+.1324920x2+0.4585190x3
+anova(modmo1)
+##
+modmo2<-lm(califtotal ~ operacion+gama)
+anova(modmo2)
+summary(modmo2)
+modelo2<-data.frame(califtotal,operacion,gama)
+
+#lo siguiente que vamos hacer es realizar el diagnostico de nuestro 
+#modelo a traves de las pruebas formales de shapiro,breush pagan
+#y durbin watson
+##para aplicar esta prueba se necesita conocer los valores ajustados,
+#los residuos del modelos y los residuos estudentizados
+names (modmo)
+modelo2$fitted.modmo2<-fitted(modmo2)
+modelo2$residuals.modmo2<-residuals(modmo2)
+modelo2$rstudent.modmo2<-rstudent(modmo2)
+###diagnostico de los supuestos 
+###supuesto 1 normalidad
+##para el supuesto de noralidad se aplica la prueba de shapito
+#en r la funcion que aplica esta prueba es shapiro.test
+shapiro.test(modelo2$fitted.modmo2)
+#en esta pruena esperamos un p value mayor a .05 y en este caso 
+#se obtiene un p value=.7918 por lo que podriamos decir que se acepta el supuesto de normalidad
+#ademas de shapiro test se debe observar graficamente esta prueba a traves de
+#las funciones de qqnorm nos permite hacer un grafico qq
+qqnorm(modelo2$rstudent.modmo2)
+qqline(modelo2$rstudent.modmo2)
+##homocedasticidad supuesto
+install.packages("lmtest")
+require(lmtest)
+bptest(modmo2)
+###supuesto de independencia o autocorrelacion
+#en este caso se aplica la prueba durbin watson, como lo vimos la clase anterior
+#esta prueba se evalua de dos formas, por un lado el valor de durbin watson
+#tiene que estar entre 1.5 y 2.5,ademas
+#de este valor hay que observar el p value que tiene que ser mayor a .05 para que 
+#cumpla en el supuesto de independencia de los residuos
+dwtest(modmo2,alternative = "two.sided")
+##en este caso obtenemos un durbin watson de .6228 por lo que podemos decir que cumple el supuesto 
+#independencia y al cumplir las 3 pruebas formales podriamos decir que tenemos un buen
+#modelo y podriamos plantear la ecuacion del modelo
+coefficients(modmo2)
+#ecuacion 
+#y=.6718442+.2640567x1+.4852713x2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+##ejercicio###
+##plantear un mrm de minimo 4 variavles independientes
+## a este modelo que planteen van a realizar lo siguiente:
+#1)analizar la anova para conocer la bondad de ajuste
+##2) a traves de los coeficientes detectar las var indep
+#no significativas
+#3)analizar la r^2 para conocer la variabilidad del modelo
+###4)en dado caso de que haya alguna var independiente no significativa eliminarla 
+#y diagnosticar el modelo a traves de las pruebas
+#para los supuestos 
+###una empresa desea analizarla las ventas de un restaurante por lo que toma la 
+#evaluacion de los clientes en diversos aspectos como lo son
+#sabor de la comida,precio,a,ambiente,atencion del personal
+#la evaluacion la se realiza en una escala del 0 al 9 siendo 8 la calificacion mas alta
+#se piensa que a mayores ventas mayor ha sido la calificacion de los aspectos evaluados
+ventas<-c(12,15,19,18,17,14,10,16,15,16,16,17,15,19,16,15,16,17,18,16,13,11,18,11,18,19,17,19,19,18)
+ambiente<-c(5,6,9,8,7,4,8,9,7,4,6,3,5,2,5,8,7,9,9,7,7,4,2,3,6,7,7,8,5,5)
+ sabcom <- c(2,6,5,6,5,5,2,7,6,3,5,4,7,6,3,7,4,6,3,6,5,2,4,5,2,1,2,6,7,6,5)
+ precio<-c(4,5,2,3,6,4,8,9,2,5,7,8,4,6,4,7,9,2,4,6,7,6,5,2,3,5,9,1,3,5)
+ atencion<-c(5,9,8,7,1,2,3,6,5,4,9,6,8,7,5,6,7,8,6,1,5,6,1,7,6,2,6,4,9,9)
+mod<-lm(ventas~sabcom+precio+atencion+ambiente)
+anova(mod)
+coef(mod)
