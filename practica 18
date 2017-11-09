@@ -1,0 +1,19 @@
+require(stats)
+base<-data.frame(mtcars  )
+##analisis exploratorio
+names(base)
+pairs(base)#grafica en pares las variables 
+cor(base)
+##modelo propuesto anteriormente
+nulo<- lm(mpg ~1, data=base)#modelo nulo se hace la variable con una constante
+completo <- lm(mpg~ . , data=base)##el punto es como si pusieramos todas las var independientes
+
+step(nulo,scope=list(lower=nulo,upper=completo),direccion="forward")#step calcula el AIC para calcular
+#el mejor modelo el que tenga el
+#AIC menor
+#el modelo nulo tiene un AIC de 115.94 por lo que se acepta el modelo que contiene un mpg~wt+cyl+hp 
+#que tiene un AIC=62.66
+mod1<-lm(mpg~wt+cyl+hp,data= base)
+summary(mod1)
+#la r ajustada es de .82 lo que explicaria el 82% del modelo y e error estadndar es de 2.51 
+#lo que nos demostraria que el modelo es bueno
