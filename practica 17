@@ -1,0 +1,23 @@
+#swisss
+#medicacion estandarizada de la fecundidad e indicadores socioeconomicos para cada una de
+#las 47 provincias francesas hablanres de suiza al rededor de 1888
+require(stats)
+base<-data.frame(swiss)
+
+##analisis exploratorio
+names(base)
+pairs(base)#grafica en pares las variables 
+cor(base)
+##modelo propuesto anteriormente
+nulo<- lm(Fertility ~1, data=base)#modelo nulo se hace la variable con una constante
+  completo <- lm(Fertility~ . , data=base)##el punto es como si pusieramos todas las var independientes
+                                          #lm(Fertility~ Infant.mortality +education+examination
+                                                        #agriculture+catholic
+  )
+step(nulo,scope=list(lower=nulo,upper=completo),direccion="forward")#step calcula el AIC para calcular
+                                                                     #el mejor medolo el que tenga el
+                                                                         #AIC menor
+
+sumary(completo)
+help(step)
+library(help="datasets")
