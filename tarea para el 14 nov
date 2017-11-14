@@ -1,0 +1,24 @@
+base9 <-read.delim("clipboard")
+  base9
+View(base9)
+nulo9 <- lm(Prom.Emi.Co2~ 1, data = base9)
+
+completo9 <- lm(Prom.Emi.Co2~ ., data = base9)
+
+
+step(nulo9,scope = list(lower= nulo9,upper=completo9),direction = "forward")
+#el mejor modelo que se determina por medio del AIC es Prom.Emi.Co2 ~  Creci.anual+ Cons.combustible.liquido+   Com.gaseoso + Comb.solidos + Uso.Petroleo+metano 
+mod9 <-lm(formula = Prom.Emi.Co2 ~  Creci.anual+ Cons.combustible.liquido+   Com.gaseoso + Comb.solidos + Uso.Petroleo+metano  , data = base9)
+summary(mod9)
+coefficients(mod9)
+
+shapiro.test(rstudent(mod9))
+#este modelo no pasa la prueba de shapiro pues el p-value no es mayor a .05
+require(lmtest)
+bptest(mod9)
+#si pasa la prueba de breusch pagan porque da un p-value de 0.63
+
+dwtest(mod9, alternative = "two.sided") 
+#este modelo no pasa la prueba independencia prueba durbin watson  pues el p-value no es mayor a .05
+
+summary(mod9)
