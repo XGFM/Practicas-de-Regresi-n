@@ -1,0 +1,212 @@
+### MRM viene interpretacion supuestos e interpretaciones 
+
+############# 
+# ejemplo 
+## se estudia y = tasa de respiracion
+# bajo puntos de goteo con un recubrimiento galvanizado
+## el agua que cae sobre el liquen contiene zink y potasio
+# que utilizadmos como variables explicativas
+
+Tasa.Respiracion <- c(71,53,55,48,69,84,21,68,68)
+Potasio <- c(388,258,292,205,449,331,114,580,622)
+Zinc <- c(2414,10693,11682,12560,2464,2607,16205,2505,1825)
+
+
+Estudio <- data.frame(Tasa.Respiracion,Potasio,Zinc)
+pairs(Estudio)
+cor(Estudio)
+
+regnull <- lm(Tasa.Respiracion~ 1,data = Estudio)
+
+allreg <- lm(Tasa.Respiracion~ ., data = Estudio)
+
+step(regnull, scope = list(lower=regnull, upper=allreg), direction="forward")
+######################
+## ecuacion del modelo
+## 
+coefficients(mod21)
+#  y=79.48+(-.00285)
+################
+## interpretar el modelo 
+# en este modelo podriamos decir que por cada unidad que aumenta el zinc disminuye la tasa de respiracion en .0028
+##
+##
+
+####################3 
+## mejor modelo lm(formula = Tasa.Respiracion ~ Zinc, data = Estudio)
+mod21 <- lm(Tasa.Respiracion~Zinc, data = Estudio)
+
+summary(mod21)
+## modelo aceptables
+shapiro.test(rstudent(mod21))
+###
+## existe normalidad en los residuos con el p- value = .7997
+require(lmtest)
+bptest(mod21)
+### tenemos un p- value mayor a .05 
+# homostacidad
+
+dwtest(mod21, alternative = "two.sided") 
+######## cumple con el modelo de independencia
+#### LIMITES PARA PREDECIR
+limestudio <- seq(min(Estudio$Zinc),max(Estudio$Zinc),length=9)
+limestudio <- data.frame(limestudio)
+limestudio
+###### hacer una prediccion 
+limestud <- predict.lm(allreg,limestudio,interval = "prediction",se.fit = TRUE,data =Estudio)
+head(limestud$fit) ### te genera los limites de la base 
+## te da los primeros valores del data 
+## fit es el valor acotado de tu base de zinc 
+### el primer valor ajustado que arroja es de 79.16 su limite inferios (lwr) es de 53.34
+# y su limite superior (upr) es de 99.04
+
+
+
+##########3 para dibijar los limites
+matplot(limestudio,limestud$fit,type ="l")
+## te arroja la y ajustada 
+### y los limites entre lineas cortadas inferio y superior
+## te aparecen los datos de zinc
+
+
+
+
+#############
+## prediccion puntual
+## y le daremos valores al zinv y al potasio para que nos arroje los valores de y (tasa de respiracion)
+predict(allreg,data.frame(Zinc=10000,Potasio=40),interval = 'predict')
+#### resultado si le damos el valor al zinc de 10,000 y al potasi de 40 
+## el resultado de y es de 60.06611 con un limite inferior de 30.97 y el superior de 89.15
+
+#######################################
+# Ejercicio 2
+# Ritmo cardiaco de personas con diabetes
+## ritmo variable dependiente
+peso <- c(74,92,63,58,78,85,85,73,62,80,72,74)
+altura <- c(168,196,170,175,162,169,190,186,176,170,176,179)
+ritmo<- c(62,75,60,71,66,62,79,75,70,66,71,69)
+edad <- c(25,31,29,64,44,41,37,35,34,29,19,50)
+length(altura)
+
+
+
+Estudio2 <- data.frame(peso,altura,ritmo,edad)
+pairs(Estudio2)
+cor(Estudio2)
+
+regnull2 <- lm(ritmo~ 1,data = Estudio2)
+
+allreg2 <- lm(ritmo~ ., data = Estudio2)
+
+step(regnull2, scope = list(lower=regnull2, upper=allreg2), direction="forward")
+#### mejor modelo lm(formula = ritmo ~ altura, data = Estudio2)
+
+mod22 <- lm(formula = ritmo ~ altura, data = Estudio2)
+
+summary(mod22)
+## modelo aceptables con una r ajustada de 67 % y error estandar de 3.33
+shapiro.test(rstudent(mod22))
+###
+## existe normalidad en los residuos con el p- value = .8781
+require(lmtest)
+bptest(mod22)
+### tenemos un p- value mayor a .05 
+# homostacidad
+
+dwtest(mod22, alternative = "two.sided") 
+### pasa la prueba de independencia
+##################
+# el ejercicio 2 es un buen modelo,pasa las pruebas 
+##############
+coefficients(mod22)
+## la ecuacion es y= -18.62 + .495737
+### por cada unidad que aumente la altura aumenta en .49  el ritmo
+
+
+
+#### LIMITES PARA PREDECIR
+limestudio <- seq(min(Estudio$Zinc),max(Estudio$Zinc),length=9)
+limestudio <- data.frame(limestudio)
+limestudio
+###### hacer una prediccion 
+limestud <- predict.lm(allreg,limestudio,interval = "prediction",se.fit = TRUE,data =Estudio)
+head(limestud$fit) ### te genera los limites de la base 
+## te da los primeros valores del data 
+## fit es el valor acotado de tu base de zinc 
+### el primer valor ajustado que arroja es de 79.16 su limite inferios (lwr) es de 53.34
+# y su limite superior (upr) es de 99.04
+
+
+##########3 para dibijar los limites
+matplot(limestudio,limestud$fit,type ="l")
+## te arroja la y ajustada 
+### y los limites entre lineas cortadas inferio y superior
+## te aparecen los datos de zinc
+
+
+# ejemplo 2 ritmo cardiaco de personas con diabetes
+peso <- c(74,92,63,58,78,85,85,73,62,80,72,74)
+altura <- c(168,196,170,175,162,169,190,186,176,170,176,179)
+ritmo <- c(62,75,60,71,66,62,79,74,70,66,71,69)
+edad <- c(25,31,29,64,44,41,37,35,34,29,19,50)
+
+estudio <-  data.frame(peso,altura,ritmo,edad)
+pairs(estudio)
+cor(estudio)
+regnull <- lm(ritmo ~ 1, data=estudio)
+allreg <- lm(ritmo ~ . ,data=estudio)
+step(regnull, scope = list(lower=regnull, upper=allreg), direction="forward")
+md1 <- lm(ritmo ~ altura, data=estudio)
+summary(md1) # rcuadrada ajustada = 0.6725 entonces en este modelo explica en un 67.25 % 
+### comparacion de los modelos 
+shapiro.test(rstudent(md1)) # con un p-value = 0.9465 que es > .05 pasa la prueba
+require(lmtest)
+bptest(md1) # con un p-value = 0.4444 > .05 pasa la prueba 
+dwtest(md1,alternative = "tow.sided") # dw = 1.91 que se encuentra en [1.5 ~ 2.5]
+summary(md1)
+# ecuacion del modelo
+# y = -17.1479 + .4869x1 +e
+# interpretacion del modelo
+# pora cada unidad que la altura aumenta el ritmo aumenta en .4869 unidades
+limestudio1 <- seq(min(estudio$altura), max(estudio$altura), length = 12)
+limestudio2 <- seq(min(estudio$peso), max(estudio$peso), length = 12)
+limestudio3 <- seq(min(estudio$edad), max(estudio$edad), length = 12)
+limestudio <- data.frame(limestudio1,limestudio2,limestudio3)
+limestudio
+limestud <- predict.lm(allreg,limestudio, interval = "prediction",se.fit = TRUE , data=estudio)
+head(limestud$fit) ## genera los limites
+matplot(limestudio, limestud$fit,type="l")# para dibujar los limites
+############ predicciones 
+predict(allreg,data.frame(peso = 60,altura=190,edad=61),interval = "predict")
+##########################################################################################
+numcajas<-c(10,15,10,20,25,18,12,14,16,22,24,17,13,30,24)
+dis<-c(30,25,40,18,22,31,26,34,29,37,20,25,27,23,33)
+tiempo<-c(24,27,29,31,25,33,26,28,31,39,33,30,25,42,40)
+
+Estudio<-data.frame(tiempo,dis,numcajas)
+pairs(Estudio)
+cor(Estudio)
+regnull<-lm(tiempo~1,data=Estudio)
+allreg<-lm(tiempo~.,data=Estudio)
+step(regnull,scope=list(lower~regnull,upper=allreg),direction = "forward")
+mod1<-lm(tiempo ~ numcajas + dis, data = Estudio)
+summary(mod1)
+
+shapiro.test(rstudent(mod1))
+#no pasa la prueba dado que el p-value no es mayor a .05
+require(lmtest)
+bptest(mod1)#si pasa la prueba pues el p-value es de .2669
+dwtest(mod1,alternative = "two.sided")#si pasa la prueba dado que el p-value es de .2072
+summary(mod1)
+##no pasa normalidad por lo que hay que revisar
+##los outlier
+install.packages("car")
+outlierTest(mod1,cutoff=.05,n.max=5,order=T)
+influencePlot(mod1,id.n=5)
+#la obervacion 5 indica con problemas 
+#ahora para confirmar se aplica el grafico do distancias do cook
+
+cmod2<-cooks.distance(mod1)
+install.packages("faraway")
+require(faraway)
+halfnorm(cmod2,labs = etique,ylab = "distcook")
