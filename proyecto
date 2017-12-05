@@ -1,0 +1,38 @@
+require(readxl)
+base <- read_excel("C:/Users/Xochiquetzal/Desktop/ipc.xlsx")#Exportamos la base que se ha descargado de la pagina yahoo finanzas 
+base <- data.frame(base)[-1]#quitamos la primer columna (la de fechas) de la base original
+View(base)#vemos la base con el fin de poder observar como ha quedado la base que manejaremos de ahora en adelante
+names(base)#aqui podemos observar los componentes de nuestra base
+pairs(base)#grafica en pares las variables 
+cor(base)
+##modelo propuesto anteriormente
+nulo<- lm(IPC ~1, data=base)#obtenemos el modelo nulo, se realiza con una constante para obtener el modelo mas simple
+completo <- lm(IPC~ . , data=base)#aqui obtenemos el modelo mas completo, el punto es como si pusieramos todas las var independientes que tenemos  en nuestra base
+
+step(nulo,scope=list(lower=nulo,upper=completo),direccion="forward")#step es un metodo que utilizamos para comparar las diferentes combinaciones de modelos y obtener la mejor combinacion
+#la que sera arrojado por el AIC menor en este caso el mejor modelo fue el 
+#IPC ~ GFNORTEO.MX + IENOVA.MX + CEMEXCPO.MX + AMXL.MX + LALAB.MX + GFINBURO.MX + KIMBERA.MX + OHLMEX.MX + GRUMAB.MX + VOLARA.MX + GFREGIOO.MX
+#con un AIC de 2816.5 que es el menor de todos
+
+mod1<-lm(formula = IPC ~ GFNORTEO.MX + IENOVA.MX + CEMEXCPO.MX + AMXL.MX + 
+           LALAB.MX + GFINBURO.MX + KIMBERA.MX + OHLMEX.MX + GRUMAB.MX + 
+           VOLARA.MX + GFREGIOO.MX, data = base)#creamos el mejor modelo para empezar a realizar las pruebas
+##prueba shapiro para normalidad 
+shapiro.test(rstudent(mod1))
+#aqui esperamos no rechazar la hip nuña por lo que el valor 
+#de p-value debe ser mayor a .05(la h0:los errores se distribuyen normalmente )
+#aqui observamos que p-value es de .2606 por lo que podemos decir que no rechazamos la hip nula,
+#es decir,los errores se distribuyen normalmente por o tanto pasa la prueba
+
+install.packages("lmtest")#instalamos la paqueteria necesaria para poder correr la prueba breusch pagan
+#breusch pagan nos permite ver autocorrelacion
+#aqui esperamos no rechazar la hip nula(h0:no hay dos variables que esten aportando
+#lo mismo al modelo) es decir un p-value mayor a .05
+bptest(mod1)
+#al correr la prueba nos da un p-value de .8897 por lo que no rechzamos la hipotesis nula y el modelo pasa la prueba de breusch pagan,por lo que podems concluir que #saber que no  hay mas de dos variables que aporten lo mismo al modelo
+dwtest(mod1,alternative="two.side") #prueba de independencia prueba durbin watson 
+#p-value mayor .05 o un valor DW~1.5 y 2.5
+#pasa la prueba dadp que el p-value es de .5106 y el DW= a 2.0934 lo que es aceptble para nuestro modelo
+summary(mod1)#obtenemos que la r ajustada es de .9658 lo que nos diria que el modelo explica un 96%
+coefficients(mod1)#obtenemos los coeficientes para formular la ecuacion 
+#y= 4810.291856+89.942748(GFNORTEO.MX)+ IENOVA.MX + 427.865123CEMEXCPO.MX +   1268.889912AMXL.MX + 121.591477LALAB.MX -339.852074GFINBURO.MX +  164.110979 KIMBERA.MX +   90.673378 OHLMEX.MX +  16.634382GRUMAB.MX -70.989159 VOLARA.MX  29.796123  GFREGIOO.MX
